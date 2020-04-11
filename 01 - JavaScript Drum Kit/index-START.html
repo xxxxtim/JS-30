@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
+<body>
+  <!-- <img src="https://i.imgur.com/b9r5sEL.jpg" alt=""> -->
 
   <div class="keys">
     <div data-key="65" class="key">
@@ -57,10 +59,41 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
-<script>
+  <!-- <script src="./01.js"></script> -->
+  <script>
+    window.addEventListener('keydown', function (e) {
+      // console.log(e);//e是一個object 用來監聽按下的按鍵
+      // console.log(e.keyCode)//e.keycode：按下鍵盤的ASCII
+      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+      // console.log(audio);
+      if (!audio) { return }// stop the function
+      audio.currentTime = 0;//设置或返回音频中的当前播放位置
+      audio.play();//播放當前的音源
 
-</script>
+
+      const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+      // console.log(key);
+      key.classList.add('playing');//多增加一個class:playing
+      // https://www.runoob.com/jsref/prop-element-classlist.html
+
+    }//function
+    )//window
+
+
+    const keys = document.querySelectorAll('.key');
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+    // 在 CSS 完成渲染後修改 <div> 元素样式及文字
+    function removeTransition(e) {
+      // console.log(e);
+      if (e.propertyName !== 'transform') return;
+
+      console.log(e);
+      this.classList.remove('playing')
+    }//function
+
+  </script>
 
 
 </body>
+
 </html>
