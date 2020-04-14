@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Type Ahead 👀</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <form class="search-form">
@@ -14,9 +16,73 @@
       <li>or a state</li>
     </ul>
   </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  <script>
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    const cities = [];
+    fetch(endpoint)
+      .then(function (response) {
+        return (response.json());
+      })
+      .then(function (response) {
+        // return cities.push(...response);//ES6 Spread Syntax 展開語法
+        cities.push(...response);
+        // console.log(cities)
+      })
 
-</script>
+
+    //用來進行輸入的字串比較
+    //wordToMatch:表示輸入的字串
+    //cities:表示 或取API的資料
+    //findMatches() return 一個符合資料的array
+    function findMatches(wordToMatch, cities) {
+      return cities.filter(function (value) {
+        const regex = new RegExp(wordToMatch, 'gi')//正則表達式
+        return value.city.match(regex) || value.state.match(regex);
+      })
+    }//function
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+
+    //
+
+    function displayMatches(e) {
+      // console.log(this.value);
+      //這邊的this指的是輸入資料
+      const matchArray = findMatches(this.value, cities);
+      // console.log(matchArray)
+      // console.log(this.value)
+      // 在call back function中this 指到的是window
+      const html = matchArray.map(function (place) {
+        // console.log(e.target.value);
+        const regex = new RegExp(e.target.value, 'gi');
+        // console.log(e.target.value)
+        // console.log(regex);
+        // string.replace(參數1,參數2)  參數2取代參數1
+
+        const cityName = place.city.replace(regex, `<span class="hl">${e.target.value}</span>`);
+        const stateName = place.state.replace(regex, `<span class="hl">${e.target.value}</span>`);
+
+        return `
+        <li>
+        <span class="name">${cityName}, ${stateName}</span>
+        <span class="population">${numberWithCommas(place.population)}</span>
+        </li>
+        `
+      }).join('')
+      // console.log(html)
+      suggestions.innerHTML = html;
+    }
+
+    const searchInput = document.getElementsByClassName('search')[0];
+    // const searchInput = document.querySelector('.search');
+    // console.log(searchInput)
+    searchInput.addEventListener('change', displayMatches);
+    searchInput.addEventListener('keyup', displayMatches);
+    const suggestions = document.getElementsByClassName('suggestions')[0];
+
+  </script>
 </body>
+
 </html>

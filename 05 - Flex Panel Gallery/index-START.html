@@ -171,8 +171,10 @@
     })
 
     arrayOfpanels.forEach(function (value) {
+      //當CSS完成渲染時，會觸發transitionend事件
       return value.addEventListener('transitionend', function (event) {
         console.log(event.propertyName)
+        //如果事件的屬性名稱包含 flex 則會新增或刪除 class:open-active到事件中
         if (event.propertyName.includes('flex')) {
           this.classList.toggle('open-active');
         }
