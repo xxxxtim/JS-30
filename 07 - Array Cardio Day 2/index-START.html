@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Array Cardio 💪💪</title>
 </head>
+
 <body>
   <p><em>Psst: have a look at the JavaScript Console</em> 💁</p>
   <script>
@@ -12,7 +14,7 @@
     const people = [
       { name: 'Wes', year: 1988 },
       { name: 'Kait', year: 1986 },
-      { name: 'Irv', year: 1970 },
+      { name: 'Irv', year: 2020 },
       { name: 'Lux', year: 2015 }
     ];
 
@@ -24,18 +26,62 @@
       { text: 'Nice Nice Nice!', id: 542328 }
     ];
 
+    // array.some() 只要array中符合一筆資料 即return true;
     // Some and Every Checks
     // Array.prototype.some() // is at least one person 19 or older?
-    // Array.prototype.every() // is everyone 19 or older?
+    const adult = people.some(function (person) {
+      console.log(person)
+      const currentYear = (new Date()).getFullYear();//獲得現在的西元年份（Number）
+      if (currentYear - person.year >= 19) {
+        return true;
+      }
+      else {
+        return false;
+      }
 
+    });
+    console.log({ adult });
+    // Array.every() 每一筆資料都符合 即return true;
+    // Array.prototype.every() // is everyone 19 or older?
+    const Alladult = people.every(function (person) {
+      const currentYear = (new Date()).getFullYear();//獲得現在的西元年份（Number）
+      if (currentYear - person.year >= 19) {
+        return true;
+      }
+    });
+    console.log({ Alladult });
+
+
+    // Array.find()方法會回傳第一個滿足所提供之測試函式的元素值。否則回傳 undefined。
     // Array.prototype.find()
     // Find is like filter, but instead returns just the one you are looking for
     // find the comment with the ID of 823423
+    const comment = comments.find(function (data) {
+      if (data.id === 823423) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    });
+    console.log(comment);
 
+
+    // Array.index()方法會回傳第一個滿足所提供之測試函式的index。否則回傳 index=-1。
     // Array.prototype.findIndex()
     // Find the comment with this ID
     // delete the comment with the ID of 823423
+    const index = comments.findIndex(function (data) {
+      if (data.id === 823423) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    })
+    console.log(`index=${index}`);
 
   </script>
 </body>
+
 </html>

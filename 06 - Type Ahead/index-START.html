@@ -50,7 +50,7 @@
     function displayMatches(e) {
       // console.log(this.value);
       //這邊的this指的是輸入資料
-      const matchArray = findMatches(this.value, cities);
+      const matchArray = findMatches(e.target.value, cities);
       // console.log(matchArray)
       // console.log(this.value)
       // 在call back function中this 指到的是window
