@@ -1,19 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>HTML5 Canvas</title>
 </head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+<body>
+  <canvas id="draw" width="800" height="800"></canvas>
+  <script>
+    const canvas = document.getElementById('draw');
+    const ctx = canvas.getContext('2d');//建立一個二維畫布
+    canvas.width = window.innerWidth;//設定寬度
+    canvas.height = window.innerHeight;//設定高度
+    ctx.strokeStyle = '#BADA55';//線條樣式
+    ctx.lineJoin = 'round';//線條連接的轉角
+    ctx.lineCap = 'round';//線條結束的樣式
+    ctx.lineWidth = 100;//線條的寬度
+    // ctx.globalCompositeOperation = 'multiply';
+
+    let isDrawing = false;//判斷是否畫圖中
+    let lastX = 0;
+    let lastY = 0;
+    let hue = 0;//色像值 hsl
+    let direction = true;//判斷粗細增減用
+
+    // 滑鼠移動中，執行function draw
+    canvas.addEventListener('mousemove', draw);
+    function draw(e) {
+      //// 判斷是否`isDrawing`，`false`則`return`不觸發此function
+      if (!isDrawing) {
+        return;
+      }
+      else {
+        // 設定線條顏色為hsl模式，吃變數hue
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+        // 起始畫圖路徑
+        ctx.beginPath();
+
+        // 將路徑指針移動到X、Y點，左上角（0,0）
+        ctx.moveTo(lastX, lastY);
+        // 將起始點與目前滑鼠位置的X、Y用線條連接起來
+        ctx.lineTo(e.offsetX, e.offsetY);
+
+        // 將線條繪製出來
+        ctx.stroke();
+        lastX = e.offsetX;
+        lastY = e.offsetY;
+        // 做顏色的變化效果，當色相值超過360後歸零
+        hue++;
+        if (hue >= 360) {
+          hue = 0;
+        }
+        //設置線條寬度變化
+        if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+          direction = !direction;
+        }
+
+        if (direction) {
+          ctx.lineWidth++;
+        } else {
+          ctx.lineWidth--;
+        }
+
+      }
+      // console.log(e);
+      console.log(ctx.lineWidth)
+    }//function draw
+
+    //滑鼠按下則觸發
+    canvas.addEventListener('mousedown', function () {
+      isDrawing = true;
+      return isDrawing;
+    })
+
+
+    // 滑鼠放開，滑鼠離開 都將isDrawing改為false不觸發function draw
+    canvas.addEventListener('mouseup', function () {
+      isDrawing = false;
+      return isDrawing;
+    })
+
+    canvas.addEventListener('mouseout', function () {
+      isDrawing = false;
+      return isDrawing;
+    })
+  </script>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+  </style>
 
 </body>
+
 </html>
