@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Console Tricks!</title>
 </head>
+
 <body>
 
   <p onClick="makeGreen()">×BREAK×DOWN×</p>
@@ -18,29 +20,74 @@
     }
 
     // Regular
+    console.log('Hello');
 
     // Interpolated
-
+    //想成C語言的printf()
+    //%s:string
+    //%f:float
+    console.log('hello i am %s', '💩');
     // Styled
+    console.log('%c happy', 'font-Size:100px; background:blue')
 
     // warning!
-
+    console.warn('Oh NO');
     // Error :|
-
+    console.error('fuck');
     // Info
+    console.info('Heyyyy');
 
     // Testing
-
+    // 可以拿來測試判斷是否為真，若為false則回傳對應的錯誤訊息
+    console.assert(1 === 2, 'Wrong');
     // clearing
+    //清除console
+    //Mac上清除的快捷鍵為⌘(Command)+K、Windows快捷鍵則為CTRL+L
+    console.clear();
 
     // Viewing DOM Elements
+    const p = document.getElementsByTagName('p')[0]//選取到P標籤
+    console.log(p);
+
+    // console.dir():會把選取到元素的屬性全部顯示出來
+    console.dir(p);
 
     // Grouping together
+    //可以把輸出資訊透過group包起來
+    dogs.forEach(function (dog) {
+      console.groupCollapsed(`${dog.name}`)
+      console.log(`this is ${dog.name}`);
+      console.log(`dogAge=${dog.age}`);
+      console.groupEnd(`${dog.name}`);
+
+    })
 
     // counting
+    //用來計算次數
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
 
     // timing
-
+    // console.time() 可以用來計算時間
+    console.time('fetch API 的時間');
+    fetch('https://api.github.com/users/wesbos')
+      .then(data => data.json())//先把資料轉成JSON
+      .then(data => {
+        console.timeEnd('fetch API 的時間');
+        console.log(data);
+        console.table(data);
+      });
   </script>
 </body>
+
 </html>
