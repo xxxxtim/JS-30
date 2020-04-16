@@ -17,30 +17,36 @@ function handleCheck(event) {
     // this.checked :判斷有無打勾 有的話回傳true
     if (event.shiftKey && this.checked) {
 
-        checkboxes.forEach(checkbox => {
-            console.log(checkbox);
-            if (checkbox === this || checkbox === lastChecked) {
-                inBetween = !inBetween;
-                console.log('Starting to check them in between!');
-            }
-            // 勾選區間內為true的checkbox
-            if (inBetween) {
-                checkbox.checked = true;
-            }
-        });
 
-        ////////////////////////////////////////////////////////////////
-        // checkboxes.forEach(function (checkbox) {
-        //     console.log(checkbox);
+        // checkboxes.forEach(checkbox => {
+        //     //arrow function
+        //     //this 指的是checkboxes中跑的每一筆資料
+        //     console.log(this);
         //     if (checkbox === this || checkbox === lastChecked) {
         //         inBetween = !inBetween;
         //         console.log('Starting to check them in between!');
         //     }
-
+        //     // 勾選區間內為true的checkbox
         //     if (inBetween) {
         //         checkbox.checked = true;
         //     }
         // });
+
+        ////////////////////////////////////////////////////////////////
+        checkboxes.forEach(function (checkbox) {
+            //callback function:
+            //如果把event.target改成this ，this指的是window
+            //event.target 指的是 checkboxes中跑的每一筆資料
+            console.log(event.target);
+            if (checkbox === event.target || checkbox === lastChecked) {
+                inBetween = !inBetween;
+                console.log('Starting to check them in between!');
+            }
+
+            if (inBetween) {
+                checkbox.checked = true;
+            }
+        });
     }
 
 
