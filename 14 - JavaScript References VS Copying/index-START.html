@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Reference VS Copy</title>
 </head>
+
 <body>
 
   <script>
@@ -13,9 +15,10 @@
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
 
     // and we want to make a copy of it.
+    const team = players;
 
     // You might think we can just do something like this:
-
+    team[2] = 'xxxxtim';
     // however what happens when we update that array?
 
     // now here is the problem!
@@ -31,6 +34,10 @@
     // or create a new array and concat the old one in
 
     // or use the new ES6 Spread
+    const fruit = [['apple'], ['banana'], ['orange']]
+    console.table(fruit);
+    console.table(...fruit);
+
 
     // now when we update it, the original one isn't changed
 
@@ -43,14 +50,35 @@
     };
 
     // and think we make a copy:
+    const handsomeTim = person;
+    person.age = 18;
+    console.table(handsomeTim)
 
     // how do we take a copy instead?
+    var obj = { a: 1, b: 2 };
+    var obj2 = Object.assign({}, obj);
+    console.log(obj, obj2);// { a: 1, b: 2 } { a: 1, b: 2 }
+    obj2.b = 3;
+    console.log(obj, obj2);// { a: 1, b: 3 } { a: 1, b: 3 }
 
     // We will hopefully soon see the object ...spread
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+    //Array
+    var arr = ['a', 'b'];
+    var arr2 = JSON.parse(JSON.stringify(arr));
+    console.log(arr, arr2);// ['a', 'b'] ['a', 'b']
+    arr2[1] = 'c';
+    console.log(arr, arr2);// ['a', 'b'] ['a', 'c']
 
+    //Object
+    var obj = { a: 1, b: 2 };
+    var obj2 = JSON.parse(JSON.stringify(obj));
+    console.log(obj, obj2);// { a: 1, b: 2 } { a: 1, b: 2 }
+    obj2.b = 3;
+    console.log(obj, obj2);// { a: 1, b: 3 } { a: 1, b: 3 }
   </script>
 
 </body>
+
 </html>
