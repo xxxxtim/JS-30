@@ -38,7 +38,7 @@
     const speakButton = document.querySelector('#speak');
     const stopButton = document.querySelector('#stop');
     // 使html中的輸入欄位成為SpeechSynthesisUtterance要使用的值
-    msg.text = document.querySelector('[name="text"]').value
+    msg.text = document.querySelector('[name="text"]').value;
 
 
     // 取得語系資訊 
@@ -49,12 +49,12 @@
         // 使用filter篩選出包含zh,en,ja的語系
         .filter(voice => voice.lang.includes('en') || voice.lang.includes('zh') || voice.lang.includes('ja'))
         // 篩選後的array透過map把資料組成html
-        .map(voice => `<option value=${voice.name}>${voice.name} (${voice.lang})</option>`)
+        .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`)
         // 用join來合併且消除原本陣列的逗點
         .join('');
     }
-    // 監聽語音清單變更後進行語系清單的更新
-    speechSynthesis.addEventListener('voiceschanged', populateVoices);
+
+
 
 
     // 播放切換
@@ -68,8 +68,6 @@
 
 
 
-    // 監聽語系選單，選擇後切換語系
-    voicesDropdown.addEventListener('change', setVoice);
 
     function setVoice() {
       // console.log(event.target.value);
@@ -79,8 +77,6 @@
 
 
 
-    // 監聽速率跟音準控制條，移動後設定
-    options.forEach(option => option.addEventListener('change', setOption));
     // 設定速率跟音準
     function setOption() {
       // 傳入的變數名稱與SpeechSynthesisUtterance本身的物件相同
@@ -90,6 +86,12 @@
       toggle();
     }
 
+    // 監聽語音清單變更後進行語系清單的更新
+    speechSynthesis.addEventListener('voiceschanged', populateVoices);
+    // 監聽語系選單，選擇後切換語系
+    voicesDropdown.addEventListener('change', setVoice);
+    // 監聽速率跟音準控制條，移動後設定
+    options.forEach(option => option.addEventListener('change', setOption));
     // 播放按鈕
     speakButton.addEventListener('click', toggle);
     // 停止按鈕
