@@ -1,41 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Speech Synthesis</title>
   <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <div class="voiceinator">
+  <div class="voiceinator">
 
-      <h1>The Voiceinator 5000</h1>
+    <h1>The Voiceinator 5000</h1>
 
-      <select name="voice" id="voices">
-        <option value="">Select A Voice</option>
-      </select>
+    <select name="voice" id="voices">
+      <option value="">Select A Voice</option>
+    </select>
 
-      <label for="rate">Rate:</label>
-      <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+    <label for="rate">Rate:</label>
+    <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
 
-      <label for="pitch">Pitch:</label>
+    <label for="pitch">Pitch:</label>
 
-      <input name="pitch" type="range" min="0" max="2" step="0.1">
-      <textarea name="text">Hello! I love JavaScript 👍</textarea>
-      <button id="stop">Stop!</button>
-      <button id="speak">Speak</button>
+    <input name="pitch" type="range" min="0" max="2" step="0.1">
+    <textarea name="text">Hello! I love JavaScript 👍</textarea>
+    <button id="stop">Stop!</button>
+    <button id="speak">Speak</button>
 
-    </div>
+  </div>
 
-<script>
-  const msg = new SpeechSynthesisUtterance();
-  let voices = [];
-  const voicesDropdown = document.querySelector('[name="voice"]');
-  const options = document.querySelectorAll('[type="range"], [name="text"]');
-  const speakButton = document.querySelector('#speak');
-  const stopButton = document.querySelector('#stop');
-</script>
+  <script>
+    const msg = new SpeechSynthesisUtterance();
+    let voices = [];
+    const voicesDropdown = document.querySelector('[name="voice"]');
+    const options = document.querySelectorAll('[type="range"], [name="text"]');
+    const speakButton = document.querySelector('#speak');
+    const stopButton = document.querySelector('#stop');
+    // 使html中的輸入欄位成為SpeechSynthesisUtterance要使用的值
+    msg.text = document.querySelector('[name="text"]').value
+
+
+    // 取得語系資訊 
+    function populateVoices() {
+      voices = this.getVoices();
+      // console.log(voices)
+      voicesDropdown.innerHTML = voices
+        // 使用filter篩選出包含zh,en,ja的語系
+        .filter(voice => voice.lang.includes('en') || voice.lang.includes('zh') || voice.lang.includes('ja'))
+        // 篩選後的array透過map把資料組成html
+        .map(voice => `<option value=${voice.name}>${voice.name} (${voice.lang})</option>`)
+        // 用join來合併且消除原本陣列的逗點
+        .join('');
+    }
+    // 監聽語音清單變更後進行語系清單的更新
+    speechSynthesis.addEventListener('voiceschanged', populateVoices);
+
+
+    // 播放切換
+    function toggle(starOver = true) {
+      speechSynthesis.cancel();
+      if (starOver) {
+        speechSynthesis.speak(msg);
+      }
+    }//function toggle
+
+
+
+
+    // 監聽語系選單，選擇後切換語系
+    voicesDropdown.addEventListener('change', setVoice);
+
+    function setVoice() {
+      // console.log(event.target.value);
+      msg.voice = voices.find(voice => voice.name === this.value);
+      toggle();
+    }
+
+
+
+    // 監聽速率跟音準控制條，移動後設定
+    options.forEach(option => option.addEventListener('change', setOption));
+    // 設定速率跟音準
+    function setOption() {
+      // 傳入的變數名稱與SpeechSynthesisUtterance本身的物件相同
+      // 所以可以透過這種方式來直接用
+      console.log(this)
+      msg[this.name] = this.value;
+      toggle();
+    }
+
+    // 播放按鈕
+    speakButton.addEventListener('click', toggle);
+    // 停止按鈕
+    stopButton.addEventListener('click', () => toggle(false));
+  </script>
 
 </body>
+
 </html>
