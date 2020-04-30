@@ -6,7 +6,7 @@ let scrollLeft;//滾動條
 
 /** 滑鼠按鍵按下 **/
 slider.addEventListener('mousedown', (e) => {
-    // console.log(this)
+    console.log(this)
     // console.log(e.target)
     // console.log(e.currentTarget)
     isDown = true;
